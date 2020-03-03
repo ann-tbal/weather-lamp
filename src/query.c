@@ -18,7 +18,7 @@ void init_query() {
     CITY city;
     QUERY query;
     query.user = user;
-    query.city = city;
+    query.city = city
 
     // ask for app id, and city name
     printf("APP ID: ");
