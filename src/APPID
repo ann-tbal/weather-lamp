@@ -1,9 +1,0 @@
-http://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=
-04d45d6be89dde252c5532d2043676ed
-
-curl -i -H "Accept: application/json" -H "Content-Type: application/json" http://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=04d45d6be89dde252c5532d2043676ed
-
-http://api.openweathermap.org/data/2.5/weather?q=Berlin&appid=04d45d6be89dde252c5532d2043676ed
-
-
-gcc -g -Wall main.c query.c -o  main
