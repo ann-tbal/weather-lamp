@@ -1,9 +1,7 @@
-#include "lib.h"
-#include "typdefs.h"
 #include "setup.h"
 
-// FUNCTION PROTOTYPES
-
+void init_query();
 
 void create_query_string();
 
+void create_query_
