@@ -1,7 +1,7 @@
 #include "query.h"
 
 
-int main(void) {
+int main() {
     query();
     return 0;
 }

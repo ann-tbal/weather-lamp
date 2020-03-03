@@ -10,19 +10,19 @@ void query();
  * @brief Initializes query. Asks for the city name and app id. 
  * 
  */
-void init_query();
+void init_query(QUERY);
 
 /**
  * @brief Create a query URL by appending city_name and app id to the request url
  * 
  */
-char *create_query_URL(QUERY);
+void set_query_URL(QUERY, char*, char*);
 
 /**
  * @brief Creates a query requests, and creates a file that stores the resonse from the query
  * 
  */
-void send_query_request(FILE);
+void send_query_request();
 
 
 /**
@@ -37,3 +37,4 @@ int get_temp(int);
  * 
  */
 void convert_to_celsius(int);
+
