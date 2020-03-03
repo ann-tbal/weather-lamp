@@ -1,5 +1,22 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <curl/curl.h>
 
-#define APPID "04d45d6be89dde252c5532d2043676ed"
-#define URL "http://api.openweathermap.org/data/2.5/weather?q"
-#define PARAM "temp"
-#define TEXTFILENAME "OMW_response.txt"
+
+typedef struct {
+    char *file_name;
+    char *app_id;
+} USER;
+
+typedef struct {
+    char *city_name;
+    int temp;
+} CITY; 
+
+typedef struct {
+    char *query_str;
+    char *param; 
+    USER user;
+    CITY city; 
+} QUERY;
