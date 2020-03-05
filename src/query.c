@@ -1,18 +1,23 @@
 #include "query.h"
 
+static FILE *fp;
+static char *file_name = "response.txt";
+
 /**
  * @brief Handles entire query process
  * 
  */
 void query() {
-
     USER user;
     CITY city;
     QUERY query;
     query.user = &user;
     query.city = &city;
+
+
     init_query(query);
     set_query_URL(query);
+    send_query_request(fp, query);
 
 }
 
@@ -70,17 +75,19 @@ void set_query_URL(QUERY query) {
  * @brief Creates a query requests, and creates a file that stores the resonse from the query
  * 
  */
-void send_query_request(char *request_url) {
+void send_query_request(FILE *fp, QUERY query) {
+
+
 
 }
 
 
 /**
- * @brief Get the temp object
+ * @brief read file <fp> for the temperature value 
  * 
- * @return int 
+ * @return temperature (in degrees celsius)
  */
-int get_temp(int kelvin_temp);
+int read_file_for_temp(FILE *fp);
 
 /**
  * @brief Return kelvin temperature to celsius temperature
