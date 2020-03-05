@@ -9,10 +9,10 @@ void query() {
     USER user;
     CITY city;
     QUERY query;
-    query.user = &user
+    query.user = &user;
     query.city = &city;
     init_query(query);
-    create_query_URL(query, query.city->city_name, query.user->app_id);
+    set_query_URL(query);
 
 }
 
@@ -54,16 +54,16 @@ void init_query(QUERY query) {
  * @brief Create a query URL by appending city_name and app id to the request url
  * 
  */
-void create_query_URL(QUERY query, char *city_name, char *app_id) {
-    // set base URL
-    strcpy(query.request_url, url);
+void set_query_URL(QUERY query) {
 
-    // add the city and app id parameters to the request URL
-    strcat(query.request_url, "q=");
-    strncat(query.request_url, city_name, city_name_len-1);
-    strcat(query.request_url, "&appid=");
-    strncat(query.request_url, app_id, app_id_len);
-    printf("%sad", query.request_url);
+    strcpy(query.request_url, url);// set base url
+
+    strcat(query.request_url, "q="); // add city parameter to the url
+    strncat(query.request_url, query.city->city_name, query.city->city_name_len-1);
+    strcat(query.request_url, "&appid="); // add the app id to the url
+    strncat(query.request_url, query.user->app_id, strlen(query.request_url) + strlen(query.user->app_id));
+
+    *(query.request_url + sizeof(query.request_url) + 1) = '\0'; //null-terminate the string 
 }
 
 /**

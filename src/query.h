@@ -16,7 +16,7 @@ void init_query(QUERY);
  * @brief Create a query URL by appending city_name and app id to the request url
  * 
  */
-void set_query_URL(QUERY, char*, char*);
+void set_query_URL(QUERY);
 
 /**
  * @brief Creates a query requests, and creates a file that stores the resonse from the query
