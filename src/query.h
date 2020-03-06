@@ -22,7 +22,7 @@ void set_query_URL(QUERY);
  * @brief Creates a query requests, and creates a file that stores the resonse from the query
  * 
  */
-void send_query_request(FILE*, QUERY);
+void send_query_request(FILE*, char*, QUERY);
 
 
 /**

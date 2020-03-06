@@ -10,6 +10,7 @@
 
 static const char *temp_param = "temp";
 static char *url = "http://api.openweathermap.org/data/2.5/weather?";
+static char *fpname = "response.txt";
 
 typedef struct {
     char file_name[MAX_FILE_NAME_LEN];
