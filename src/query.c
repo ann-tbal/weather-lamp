@@ -65,32 +65,13 @@ void set_query_URL(QUERY query) {
     strncat(query.request_url, query.user->app_id, strlen(query.request_url) + strlen(query.user->app_id));
     *(query.request_url + sizeof(query.request_url) + 1) = '\0'; //null-terminate the string 
 }
-
-struct MemoryStruct {
-  char *memory;
-  size_t size;
-};
  
-static size_t
-WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp)
+static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
 {
-  size_t realsize = size * nmemb;
-  struct MemoryStruct *mem = (struct MemoryStruct *)userp;
- 
-  char *ptr = realloc(mem->memory, mem->size + realsize + 1);
-  if(ptr == NULL) {
-    /* out of memory! */ 
-    printf("not enough memory (realloc returned NULL)\n");
-    return 0;
-  }
- 
-  mem->memory = ptr;
-  memcpy(&(mem->memory[mem->size]), contents, realsize);
-  mem->size += realsize;
-  mem->memory[mem->size] = 0;
- 
-  return realsize;
+  size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
+  return written;
 }
+ 
 
 /**
  * @brief Creates a query requests, and creates a file that stores the resonse from the query
@@ -100,16 +81,13 @@ void send_query_request(FILE *fp, char *fpname, QUERY query) {
     fp = fopen(fpname, "wb");
     if (fp != NULL) {
         CURL *curl;
-        struct MemoryStruct chunk;
-        chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */ 
-        chunk.size = 0;
         CURLcode res;
 
         curl = curl_easy_init();
         if (curl) {
             curl_easy_setopt(curl, CURLOPT_URL, query.request_url);
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
             curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0");
             res = curl_easy_perform(curl);
             if(res != CURLE_OK) {
@@ -119,9 +97,11 @@ void send_query_request(FILE *fp, char *fpname, QUERY query) {
         } else {
             printf("Curl init failed.");
         }
+        curl_easy_cleanup(curl);
     } else {
         printf("File open not opened.");
     }
+    fclose(fp);
 }
 
 /**
