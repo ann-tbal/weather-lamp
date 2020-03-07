@@ -1,4 +1,5 @@
 #include "setup.h"
+#include "secret.h"
 
 /**
  * @brief Handles entire query process
@@ -16,25 +17,27 @@ void init_query(QUERY);
  * @brief Create a query URL by appending city_name and app id to the request url
  * 
  */
-void set_query_URL(QUERY, char*, char*);
+QUERY set_query_URL(QUERY);
 
 /**
  * @brief Creates a query requests, and creates a file that stores the resonse from the query
  * 
  */
-void send_query_request();
+void send_query_request(FILE*, char*, QUERY);
 
 
 /**
- * @brief Get the temp object
+ * @brief read file <fp> for the temperature value 
  * 
- * @return int 
+ * @return temperature (in degrees celsius)
  */
-int get_temp(int);
+int read_file_for_temp(FILE *fp);
 
 /**
  * @brief Return kelvin temperature to celsius temperature
  * 
  */
 void convert_to_celsius(int);
+
+QUERY temp_init_query(QUERY);
 
