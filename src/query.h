@@ -56,5 +56,5 @@ int convert_to_celsius(int);
  * @param stream 
  * @return size_t 
  */
-static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
+static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream);
 

@@ -13,6 +13,7 @@ void query() {
     query = temp_init_query(query);
     query = set_query_URL(query);
     send_query_request(fp, fpname, query);
+    query.city->temp = read_file_for_temp(fp);
 }
 
 QUERY temp_init_query(QUERY query) {
@@ -25,7 +26,6 @@ QUERY temp_init_query(QUERY query) {
 
 void init_query(QUERY query) {
     char *temp;
-
     // request app id
     temp = malloc(sizeof(char)*(MAX_APP_ID_LEN));
     if (temp != NULL) {
@@ -38,7 +38,6 @@ void init_query(QUERY query) {
         printf("Failed to allocate memory while requesting app ID");
     }
     free(temp);
-    
     // request name of city to query 
     temp = malloc(sizeof(char)*(MAX_CITY_NAME_LEN));
     if (temp != NULL) {
@@ -66,7 +65,6 @@ void send_query_request(FILE *fp, char *fpname, QUERY query) {
     if (fp != NULL) {
         CURL *curl;
         CURLcode res;
-
         curl = curl_easy_init();
         if (curl) {
             curl_easy_setopt(curl, CURLOPT_URL, query.request_url);
@@ -88,8 +86,13 @@ void send_query_request(FILE *fp, char *fpname, QUERY query) {
     fclose(fp);
 }
 
-int read_file_for_temp(FILE *fp) {
-
+int read_file_for_temp(FILE *fp, char *fpname) {
+    fp = fopen(fpname, "r");
+    if (fp) {
+        
+    } else {
+        printf("File not opened.");
+    }
 }
 
 int convert_to_celsius(int temp) {
@@ -97,8 +100,8 @@ int convert_to_celsius(int temp) {
 }
 
 static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
-  size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
-  return written;
+    size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
+    return written;
 }
 
 
