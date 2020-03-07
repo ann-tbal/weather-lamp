@@ -8,6 +8,14 @@
 void query();
 
 /**
+ * @brief Temporary query init so I don't have to keep entering the city.
+ * 
+ * @param query 
+ * @return QUERY 
+ */
+QUERY temp_init_query(QUERY);
+
+/**
  * @brief Initializes query. Asks for the city name and app id. 
  * 
  */
@@ -25,7 +33,6 @@ QUERY set_query_URL(QUERY);
  */
 void send_query_request(FILE*, char*, QUERY);
 
-
 /**
  * @brief read file <fp> for the temperature value 
  * 
@@ -37,7 +44,17 @@ int read_file_for_temp(FILE *fp);
  * @brief Return kelvin temperature to celsius temperature
  * 
  */
-void convert_to_celsius(int);
+int convert_to_celsius(int);
 
-QUERY temp_init_query(QUERY);
+
+/**
+ * @brief Utility function for writing data to some file pointed by ptr
+ * 
+ * @param ptr 
+ * @param size 
+ * @param nmemb 
+ * @param stream 
+ * @return size_t 
+ */
+static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
 
