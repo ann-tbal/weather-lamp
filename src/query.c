@@ -17,15 +17,21 @@ void query() {
 
     query = temp_init_query(query);
     query = set_query_URL(query);
-    // send_query_request(fp, fpname, query);
+    printf("%s", query.request_url);
+    send_query_request(fp, fpname, query);
 }
 
+/**
+ * @brief Temporary query init so I don't have to keep entering the city.
+ * 
+ * @param query 
+ * @return QUERY 
+ */
 QUERY temp_init_query(QUERY query) {
-    query.user->app_id_len = strlen(temp_APPID);
-    query.city->city_name_len = strlen(temp_CITY);
-
     strcpy(query.user->app_id, temp_APPID);
     strcpy(query.city->city_name, temp_CITY);
+    query.user->app_id_len = strlen(query.user->app_id) + 1;
+    query.city->city_name_len = strlen(query.city->city_name) + 1;
     return query;
 }
 
@@ -81,7 +87,6 @@ static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
   size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
   return written;
 }
- 
 
 /**
  * @brief Creates a query requests, and creates a file that stores the resonse from the query
