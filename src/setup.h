@@ -10,6 +10,7 @@
 
 static const char *temp_param = "temp";
 static char *url = "http://api.openweathermap.org/data/2.5/weather?";
+<<<<<<< HEAD
 static char *myappid = "";
 static char *mycity = "";
 static FILE* fp;
@@ -20,6 +21,9 @@ static enum query_flags {
     FILE_WRITE_SUCCESS = 0, 
     FILE_OPEN_SUCCESS = 0,
 };
+=======
+static char *fpname = "response.txt";
+>>>>>>> temperature
 
 typedef struct {
     char file_name[MAX_FILE_NAME_LEN];

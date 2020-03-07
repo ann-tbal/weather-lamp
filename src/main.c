@@ -3,5 +3,6 @@
 
 int main() {
     query();
+
     return 0;
 }
