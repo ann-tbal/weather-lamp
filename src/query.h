@@ -38,3 +38,5 @@ int read_file_for_temp(FILE *fp);
  */
 void convert_to_celsius(int);
 
+void temp_init_query(QUERY);
+

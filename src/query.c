@@ -14,9 +14,19 @@ void query() {
     query.user = &user;
     query.city = &city;
 
-    init_query(query);
+    // init_query(query);
+    temp_init_query(query);
     set_query_URL(query);
-    send_query_request(fp, fpname, query);
+    printf("%s ", query.request_url);
+    // send_query_request(fp, fpname, query);
+}
+
+void temp_init_query(QUERY query) {
+    query.user->app_id_len = strlen(APPID);
+    query.city->city_name_len = strlen(CITY);
+
+    strcpy(query.user->app_id, APPID);
+    strcpy(query.city->city_name, CITY);
 }
 
 /**
