@@ -1,4 +1,5 @@
 #include "setup.h"
+#include "secret.h"
 
 /**
  * @brief Handles entire query process
@@ -16,7 +17,7 @@ void init_query(QUERY);
  * @brief Create a query URL by appending city_name and app id to the request url
  * 
  */
-void set_query_URL(QUERY);
+QUERY set_query_URL(QUERY);
 
 /**
  * @brief Creates a query requests, and creates a file that stores the resonse from the query
@@ -38,5 +39,5 @@ int read_file_for_temp(FILE *fp);
  */
 void convert_to_celsius(int);
 
-void temp_init_query(QUERY);
+QUERY temp_init_query(QUERY);
 

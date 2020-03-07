@@ -3,6 +3,7 @@
 static FILE *fp;
 static char *file_name = "response.txt";
 
+
 /**
  * @brief Handles entire query process
  * 
@@ -14,19 +15,18 @@ void query() {
     query.user = &user;
     query.city = &city;
 
-    // init_query(query);
-    temp_init_query(query);
-    set_query_URL(query);
-    printf("%s ", query.request_url);
+    query = temp_init_query(query);
+    query = set_query_URL(query);
     // send_query_request(fp, fpname, query);
 }
 
-void temp_init_query(QUERY query) {
-    query.user->app_id_len = strlen(APPID);
-    query.city->city_name_len = strlen(CITY);
+QUERY temp_init_query(QUERY query) {
+    query.user->app_id_len = strlen(temp_APPID);
+    query.city->city_name_len = strlen(temp_CITY);
 
-    strcpy(query.user->app_id, APPID);
-    strcpy(query.city->city_name, CITY);
+    strcpy(query.user->app_id, temp_APPID);
+    strcpy(query.city->city_name, temp_CITY);
+    return query;
 }
 
 /**
@@ -67,13 +67,13 @@ void init_query(QUERY query) {
  * @brief Create a query URL by appending city_name and app id to the request url
  * 
  */
-void set_query_URL(QUERY query) {
+QUERY set_query_URL(QUERY query) {
     strcpy(query.request_url, url);// set base url
     strcat(query.request_url, "q="); // add city parameter to the url
     strncat(query.request_url, query.city->city_name, query.city->city_name_len-1);
     strcat(query.request_url, "&appid="); // add the app id to the url
     strncat(query.request_url, query.user->app_id, strlen(query.request_url) + strlen(query.user->app_id));
-    *(query.request_url + sizeof(query.request_url) + 1) = '\0'; //null-terminate the string 
+    return query;
 }
  
 static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream)
