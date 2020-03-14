@@ -10,45 +10,19 @@ void query() {
     query.user = &user;
     query.city = &city;
 
-    query = temp_init_query(query);
+    query = init_query(query);
     query = set_query_URL(query);
     send_query_request(fp, fpname, query);
-    query.city->temp = read_file_for_temp(fp);
+    query.city->temp = read_file_for_temp(fp, file_name);
+    printf("%s", query.city->temp);
 }
 
-QUERY temp_init_query(QUERY query) {
+QUERY init_query(QUERY query) {
     strcpy(query.user->app_id, temp_APPID);
     strcpy(query.city->city_name, temp_CITY);
     query.user->app_id_len = strlen(query.user->app_id) + 1;
     query.city->city_name_len = strlen(query.city->city_name) + 1;
     return query;
-}
-
-void init_query(QUERY query) {
-    char *temp;
-    // request app id
-    temp = malloc(sizeof(char)*(MAX_APP_ID_LEN));
-    if (temp != NULL) {
-        printf("APP ID: ");
-        fgets(temp, MAX_APP_ID_LEN, stdin);
-        (query.user)->app_id_len = strlen(temp); // get size of app_id
-        strcpy(query.user->app_id, temp); // set user app id
-
-    } else {
-        printf("Failed to allocate memory while requesting app ID");
-    }
-    free(temp);
-    // request name of city to query 
-    temp = malloc(sizeof(char)*(MAX_CITY_NAME_LEN));
-    if (temp != NULL) {
-        printf("CITY TO QUERY: ");
-        fgets(temp, MAX_CITY_NAME_LEN, stdin);
-        query.city->city_name_len = strlen(temp); // get size of city
-        strcpy(query.city->city_name, temp); // set city to query 
-    } else {
-        printf("Failed to allocate memory while requesting city");
-    }
-    free(temp);
 }
 
 QUERY set_query_URL(QUERY query) {
@@ -87,16 +61,25 @@ void send_query_request(FILE *fp, char *fpname, QUERY query) {
 }
 
 int read_file_for_temp(FILE *fp, char *fpname) {
-    fp = fopen(fpname, "r");
-    if (fp) {
-        
-    } else {
-        printf("File not opened.");
-    }
+    char *temp_str;
+    int temp_int = 0;
+    temp_str = get_value_from_json(fp, fpname, temp_param);
+    //temp_int = convert_to_int(temp_str);
+    //temp_int = convert_to_celsius(temp_int);
+    return temp_int;
 }
 
 int convert_to_celsius(int temp) {
     temp = temp - 273.15;
+}
+
+int convert_to_int(char *str) {
+    int res; 
+    char *p = str;
+    while(p) {
+        res = res*10 + (*p + '0');
+    }
+    return res;
 }
 
 static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
