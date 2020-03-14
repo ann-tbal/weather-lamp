@@ -1,3 +1,7 @@
-// very rough parse...
+#include <string.h>
+#include <stdio.h>
 
-void *read_json_file(FILE *fp, char *fpname, char *param, int expected_length);
+#define MAX_LINE_LEN 1000
+
+void get_value_from_json(FILE *, char *, const char *, char *); 
+

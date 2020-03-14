@@ -1,14 +1,17 @@
 #include "setup.h"
-<<<<<<< HEAD
-#include <curl/curl.h>
-
-// CURL *curl_easy_init();
-// CURLcode curl_easy_setopt(CURL*, CURLoption, parameter);
-// CURLcode curl_easy_perform(CURL *);
-// void curl_easy_cleanup(CURL *);
-=======
 #include "secret.h"
->>>>>>> temperature
+#include <curl/curl.h>
+#include "jsonparse.h"
+
+static const char *temp_param = "temp";
+static char *url = "http://api.openweathermap.org/data/2.5/weather?";
+static char *fpname = "response.txt";
+
+typedef struct {
+    char request_url[MIN_QUERY_STR_LEN + MAX_CITY_NAME_LEN + MAX_APP_ID_LEN];
+    USER *user;
+    CITY *city; 
+} QUERY;
 
 /**
  * @brief Handles entire query process
@@ -28,40 +31,21 @@ QUERY init_query(QUERY);
  * @brief Create a query URL by appending city_name and app id to the request url
  * 
  */
-<<<<<<< HEAD
-void set_query_URL(QUERY);
-=======
 QUERY set_query_URL(QUERY);
->>>>>>> temperature
 
 /**
  * @brief Creates a query requests, and creates a file that stores the resonse from the query
  * 
  */
 void send_query_request(FILE*, char*, QUERY);
-<<<<<<< HEAD
-
-
-/**
- * @brief Get the temp object from the file 
-=======
 
 /**
  * @brief read file <fp> for the temperature value 
->>>>>>> temperature
  * 
  * @return temperature (in degrees celsius)
  */
-<<<<<<< HEAD
-<<<<<<< HEAD
-void read_file_for_temp();
-=======
-int read_file_for_temp(FILE *fp);
->>>>>>> temperature
-=======
-int read_file_for_temp(FILE *fp, char* fpname);
->>>>>>> origin/temperature
 
+int read_file_for_temp(FILE *fp, char *fpname);
 /**
  * @brief Return kelvin temperature to celsius temperature
  * 
@@ -77,11 +61,7 @@ int convert_to_celsius(int);
  * @param stream 
  * @return size_t 
  */
-static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream);
+size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream);
 
-/**
- * @brief libcurl prototype for write function callback
- * @return size_t 
- */
-static size_t write_callback(void *, size_t, size_t, FILE *);
+
 

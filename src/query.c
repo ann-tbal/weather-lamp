@@ -1,40 +1,19 @@
 #include "query.h"
 
 static FILE *fp;
-static char *file_name = "response.txt";
 
-<<<<<<< HEAD
-    enum query_flags query_flag;
-=======
 void query() {
->>>>>>> temperature
     USER user;
     CITY city;
     QUERY query;
     query.user = &user;
     query.city = &city;
-<<<<<<< HEAD
-
-    /**
-     * @brief uncomment this to set a dynamic (unchanging?) app_id and city. 
-     just got tired ot having to re-enter it. each and every tiem
-     * 
-     */
-    strcpy(query.user->app_id, myappid);
-    strcpy(query.city->city_name, mycity);
-    set_query_URL(query);
-    send_query_request(fp, file_name, query);
-    // if (query_flag.FILE_WRITE_SUCCESS >= 0) {
-    //     read_file_for_temp();
-    // }
-=======
->>>>>>> temperature
 
     query = init_query(query);
     query = set_query_URL(query);
     send_query_request(fp, fpname, query);
-    query.city->temp = read_file_for_temp(fp, file_name);
-    printf("%s", query.city->temp);
+    query.city->temp = read_file_for_temp(fp, fpname);
+    printf("The weather in %s is %d degrees celsius \n", query.city->city_name, query.city->temp);
 }
 
 QUERY init_query(QUERY query) {
@@ -45,103 +24,6 @@ QUERY init_query(QUERY query) {
     return query;
 }
 
-<<<<<<< HEAD
-void init_query(QUERY query) {
-    char *temp;
-
-    // request app id
-    temp = malloc(sizeof(char)*(MAX_APP_ID_LEN));
-    if (temp != NULL) {
-        printf("APP ID: ");
-        fgets(temp, MAX_APP_ID_LEN, stdin);
-        (query.user)->app_id_len = strlen(temp); // get size of app_id
-        strcpy(query.user->app_id, temp); // set user app id
-
-    } else {
-        printf("Failed to allocate memory while requesting app ID");
-    }
-    free(temp);
-    
-    // request name of city to query 
-    temp = malloc(sizeof(char)*(MAX_CITY_NAME_LEN));
-    if (temp != NULL) {
-        printf("CITY TO QUERY: ");
-        fgets(temp, MAX_CITY_NAME_LEN, stdin);
-        query.city->city_name_len = strlen(temp); // get size of city
-        strcpy(query.city->city_name, temp); // set city to query 
-    } else {
-        printf("Failed to allocate memory while requesting city");
-    }
-    free(temp);
-}
-
-<<<<<<< HEAD
-/**
- * @brief Create a query URL by appending city_name and app id to the request url
- * 
- */
-void set_query_URL(QUERY query) {
-    // set base URL
-    strcpy(query.request_url, url);
-
-    // add the city and app id parameters to the request URL
-    strcat(query.request_url, "q=");
-    strncat(query.request_url, query.city->city_name, query.city->city_name_len -1 );
-    strcat(query.request_url, "&appid=");
-    strncat(query.request_url, query.user->app_id, strlen(query.request_url) + strlen(query.user->app_id));
-    strcat(query.request_url, "\n");
-    printf("%s", query.request_url);
-}
-
-/**
- * @brief Creates a query to the OpenWeatherMap API and stores Json data in a file 
- * 
- */
-void send_query_request(FILE *fp, char *file_name, QUERY query) {
-    fp = fopen(file_name, "w");
-    if (fp == NULL) {
-        printf("Could not open file.");
-    } 
-    else {
-        CURL *curl = curl_easy_init();
-        if (curl) {
-            curl_easy_setopt(curl, CURLOPT_URL, query.request_url);
-            curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)fp);
- 
-            CURLcode res = curl_easy_perform(curl);
-            if (res != CURLE_OK) {
-                printf("Curl_easy_perform: failed");
-            }
-            /* Always clean up. */ 
-            curl_easy_cleanup(curl);
-        }
-    }
-    fclose(fp);
-}
-
-/**
- * @brief extract the temp from the file  
- * 
- * @return temperature (in degrees celsius)
- */
-void read_file_for_temp();
-
-/**
- * @brief Return kelvin temperature to celsius temperature
- * 
- */
-void convert_to_celsius(int temp) {
-    temp = temp - 273.15;
-}
-
-static size_t write_callback(void *contents, size_t size, size_t nitems, FILE *file) {
-    return fwrite(contents, size, nitems, file);
-}
-=======
-=======
->>>>>>> origin/temperature
 QUERY set_query_URL(QUERY query) {
     strcpy(query.request_url, url);// set base url
     strcat(query.request_url, "q="); // add city parameter to the url
@@ -178,16 +60,17 @@ void send_query_request(FILE *fp, char *fpname, QUERY query) {
 }
 
 int read_file_for_temp(FILE *fp, char *fpname) {
-    char *temp_str;
-    int temp_int = 0;
-    temp_str = get_value_from_json(fp, fpname, temp_param);
-    //temp_int = convert_to_int(temp_str);
-    //temp_int = convert_to_celsius(temp_int);
+    char *temp_str = (char *) malloc(sizeof(char)*MAX_VALUE_LEN);
+    int temp_int;
+    get_value_from_json(fp, fpname, temp_param, temp_str);
+    temp_int = atof(temp_str);
+    temp_int = convert_to_celsius(atof(temp_str));
     return temp_int;
 }
 
 int convert_to_celsius(int temp) {
     temp = temp - 273.15;
+    return temp;
 }
 
 int convert_to_int(char *str) {
@@ -195,14 +78,14 @@ int convert_to_int(char *str) {
     char *p = str;
     while(p) {
         res = res*10 + (*p + '0');
+        p++;
     }
     return res;
 }
 
-static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
+size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
     size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
     return written;
 }
 
 
->>>>>>> temperature
