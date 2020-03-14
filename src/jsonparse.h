@@ -1,0 +1,3 @@
+// very rough parse...
+
+void *read_json_file(FILE *fp, char *fpname, char *param, int expected_length);
