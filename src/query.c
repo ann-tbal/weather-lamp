@@ -1,7 +1,6 @@
 #include "query.h"
 
 static FILE *fp;
-static char *file_name = "response.txt";
 
 void query() {
     USER user;
@@ -13,8 +12,8 @@ void query() {
     query = init_query(query);
     query = set_query_URL(query);
     send_query_request(fp, fpname, query);
-    query.city->temp = read_file_for_temp(fp, file_name);
-    printf("%s", query.city->temp);
+    query.city->temp = read_file_for_temp(fp, fpname);
+    printf("The weather in %s is %d degrees celsius \n", query.city->city_name, query.city->temp);
 }
 
 QUERY init_query(QUERY query) {
@@ -61,16 +60,17 @@ void send_query_request(FILE *fp, char *fpname, QUERY query) {
 }
 
 int read_file_for_temp(FILE *fp, char *fpname) {
-    char *temp_str;
-    int temp_int = 0;
-    temp_str = get_value_from_json(fp, fpname, temp_param);
-    //temp_int = convert_to_int(temp_str);
-    //temp_int = convert_to_celsius(temp_int);
+    char *temp_str = (char *) malloc(sizeof(char)*MAX_VALUE_LEN);
+    int temp_int;
+    get_value_from_json(fp, fpname, temp_param, temp_str);
+    temp_int = atof(temp_str);
+    temp_int = convert_to_celsius(atof(temp_str));
     return temp_int;
 }
 
 int convert_to_celsius(int temp) {
     temp = temp - 273.15;
+    return temp;
 }
 
 int convert_to_int(char *str) {
@@ -78,11 +78,12 @@ int convert_to_int(char *str) {
     char *p = str;
     while(p) {
         res = res*10 + (*p + '0');
+        p++;
     }
     return res;
 }
 
-static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
+size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
     size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
     return written;
 }

@@ -1,5 +1,17 @@
 #include "setup.h"
 #include "secret.h"
+#include <curl/curl.h>
+#include "jsonparse.h"
+
+static const char *temp_param = "temp";
+static char *url = "http://api.openweathermap.org/data/2.5/weather?";
+static char *fpname = "response.txt";
+
+typedef struct {
+    char request_url[MIN_QUERY_STR_LEN + MAX_CITY_NAME_LEN + MAX_APP_ID_LEN];
+    USER *user;
+    CITY *city; 
+} QUERY;
 
 /**
  * @brief Handles entire query process
@@ -32,8 +44,8 @@ void send_query_request(FILE*, char*, QUERY);
  * 
  * @return temperature (in degrees celsius)
  */
-int read_file_for_temp(FILE *fp, char* fpname);
 
+int read_file_for_temp(FILE *fp, char *fpname);
 /**
  * @brief Return kelvin temperature to celsius temperature
  * 
@@ -49,5 +61,7 @@ int convert_to_celsius(int);
  * @param stream 
  * @return size_t 
  */
-static size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream);
+size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream);
+
+
 
